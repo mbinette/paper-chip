@@ -1,8 +1,9 @@
 {
   "name": "paper-chip",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "authors": [
-    "Ben Davis <bendavis78@gmail.com>"
+    "Ben Davis <bendavis78@gmail.com>",
+    "Michael Binette <mbinette@oncasoft.com>"
   ],
   "description": "Polymer element that represents a complex entity such as a calendar event or a contact.",
   "keywords": [
