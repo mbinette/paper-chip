@@ -69,6 +69,14 @@ Basic chip with single letter instead of an icon
       :host([animated]) ::slotted(*) {
         transition: 200ms ease-in;
       }
+/*        
+      This is because in Shadow DOM (Chrome), hidden is given display: none; without the !important. 
+      In Shady DOM (any browser using the polyfill), hidden is given display: none !important;
+      This is to compensate until it is fixed in polymer itself.
+*/        
+      [hidden] {
+        display: none !important;
+      }
       #main, #chip {
         border-radius: 16px;
       }
@@ -162,6 +170,29 @@ Basic chip with single letter instead of an icon
       :host(:not([removable])) #removeBtn {
         display: none;
       }
+      #selectBtn {
+        position: relative;
+        margin: 0 8px 0 4px;
+        padding: 2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 100%;
+        background-color: var(--paper-chip-selectbtn-background-color, var(--paper-grey-400));
+        color: var(--paper-chip-selectbtn-icon-color, var(--text-primary-color));
+        cursor: pointer;
+        @apply --paper-chip-selectbtn;
+      }
+      #selectBtn iron-icon {
+        width: 12px;
+        height: 12px;
+        display: block;
+        stroke-width: 2;
+        stroke: var(--paper-chip-selectbtn-icon-color, var(--text-primary-color));
+        @apply --paper-chip-selectbtn-icon;
+      }
+      :host(:not([selectable])) #selectBtn {
+        display: none;
+      }
       /* pressed state */
       :host([pressed]) #main {
         background-color: var(--paper-chip-pressed-background-color, var(--paper-grey-300));
@@ -237,6 +268,16 @@ Basic chip with single letter instead of an icon
         width: 16px;
         height: 16px;
       }
+      :host([opened]) #selectBtn {
+        padding: 4px;
+        margin-left: 20px;
+        width: 16px;
+        height: 16px;
+      }
+      :host([opened]) #selectBtn iron-icon {
+        width: 16px;
+        height: 16px;
+      }
 
       /* open + active state */
       :host([opened][active]) #chip,
@@ -245,6 +286,10 @@ Basic chip with single letter instead of an icon
 				color: var(--paper-chip-active-text-color, var(--text-primary-color));
       }
       :host([opened][active]) #removeBtn {
+        color: var(--paper-chip-active-color, var(--accent-color));
+        background-color: var(--paper-chip-active-text-color, var(--text-primary-color));
+      }
+      :host([opened][active]) #selectBtn {
         color: var(--paper-chip-active-color, var(--accent-color));
         background-color: var(--paper-chip-active-text-color, var(--text-primary-color));
       }
@@ -267,6 +312,9 @@ Basic chip with single letter instead of an icon
           </div>
           <div id="removeBtn" on-tap="remove" aria-label="remove button">
             <iron-icon icon="close" class="icon"></iron-icon>
+          </div>
+          <div id="selectBtn" on-tap="select" aria-label="select button">
+            <iron-icon icon="check" class="icon" hidden$=[[!selected]]></iron-icon>
           </div>
         </div>
         <div id="content">
@@ -294,6 +342,34 @@ Basic chip with single letter instead of an icon
          */
         removable: {
           type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
+
+        /**
+         * Whether or not the chip is selectable. If `true`, a select button will
+         * be shown and act like a checkbox.
+         *
+         * @attribute selectable
+         * @type boolean
+         * @default false
+         */
+         selectable: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
+
+        /**
+         * Whether or not the chip is selected. Requires selectable to be true.
+         *
+         * @attribute selected
+         * @type boolean
+         * @default false
+         */
+         selected: {
+          type: Boolean,
+          notify: true,
           value: false,
           reflectToAttribute: true
         },
@@ -386,6 +462,10 @@ Basic chip with single letter instead of an icon
           // disable tabindex on remove button so that tabindex can be used for chips
           this.$.removeBtn.removeAttribute('tabindex');
         }
+        if (this.$.selectBtn) {
+          // disable tabindex on select button so that tabindex can be used for chips
+          this.$.selectBtn.removeAttribute('tabindex');
+        }
       },
       _computeElevation: function(opened, focused, pressed) {
         if (focused || pressed) {
@@ -414,10 +494,25 @@ Basic chip with single letter instead of an icon
           this.parentNode.removeChild(this);
         }
       },
+      /**
+       * Change selection.
+       *
+       * @event select
+       */
+       select: function(event) {
+        event.stopPropagation();
+        this.selected = !this.selected;
+      },
+
       toggleOpened: function() {
+        console.log('toggleOpened');
         if (!this.singleLine) {
+          console.log('wrong');
           this.opened = !this.opened;
-        }
+        } else {
+          console.log('selected:' + this.selected);
+          this.selected = !this.selected;
+        };
       },
       _singleLineChanged: function(singleLine) {
         if (singleLine && this.opened) {
@@ -457,3 +552,4 @@ Basic chip with single letter instead of an icon
   </script>
 
 </dom-module>
+
