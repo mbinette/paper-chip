@@ -505,12 +505,9 @@ Basic chip with single letter instead of an icon
       },
 
       toggleOpened: function() {
-        console.log('toggleOpened');
         if (!this.singleLine) {
-          console.log('wrong');
           this.opened = !this.opened;
         } else {
-          console.log('selected:' + this.selected);
           this.selected = !this.selected;
         };
       },
