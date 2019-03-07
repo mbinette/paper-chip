@@ -1,11 +1,4 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-behaviors/iron-button-state.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../iron-icon/iron-icon.html">
-<link rel="import" href="../paper-styles/element-styles/paper-material-styles.html">
-
-<!--
+/**
 Material Design: [Chips](http://www.google.com/design/spec/components/chips.html)
 
 `paper-chip` is a small element that represents a complex entity such as a
@@ -48,10 +41,14 @@ Basic chip with single letter instead of an icon
 @blurb A basic "chip" element representing an icon/image and a short piece of text.
 @homepage http://bendavis78.github.io/paper-chip/
 @demo demo/index.html
--->
-
-<dom-module id="paper-chip">
-  <template>
+*/
+/*
+  FIXME(polymer-modulizer): the above comments were extracted
+  from HTML and may be out of place here. Review them and
+  then delete this comment!
+*/
+Polymer({
+  _template: Polymer.html`
     <style include="paper-material-styles">
       :host {
         display: inline-block;
@@ -300,7 +297,7 @@ Basic chip with single letter instead of an icon
         color: var(--paper-chip-active-secondary-text-color, var(--text-primary-color));
       }
     </style>
-    <div id="shadow" class="paper-material" elevation="{{_elevation}}" animated$="{{animated}}">
+    <div id="shadow" class="paper-material" elevation="{{_elevation}}" animated\$="{{animated}}">
       <div id="main">
         <div id="chip">
           <div id="icon">
@@ -314,7 +311,7 @@ Basic chip with single letter instead of an icon
             <iron-icon icon="close" class="icon"></iron-icon>
           </div>
           <div id="selectBtn" on-tap="select" aria-label="select button">
-            <iron-icon icon="check" class="icon" hidden$=[[!selected]]></iron-icon>
+            <iron-icon icon="check" class="icon" hidden\$="[[!selected]]"></iron-icon>
           </div>
         </div>
         <div id="content">
@@ -322,231 +319,238 @@ Basic chip with single letter instead of an icon
         </div>
       </div>
     </div>
-  </template>
+`,
 
-  <script>
-    Polymer({
-      is: 'paper-chip',
-      behaviors: [
-        Polymer.IronButtonState,
-        Polymer.IronControlState,
-      ],
-      properties: {
-        /**
-         * Whether or not the chip is removable. If `true`, a remove button will
-         * be shown.
-         *
-         * @attribute removable
-         * @type boolean
-         * @default false
-         */
-        removable: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true
-        },
+  is: 'paper-chip',
 
-        /**
-         * Whether or not the chip is selectable. If `true`, a select button will
-         * be shown and act like a checkbox.
-         *
-         * @attribute selectable
-         * @type boolean
-         * @default false
-         */
-         selectable: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true
-        },
+  behaviors: [
+    Polymer.IronButtonState,
+    Polymer.IronControlState,
+  ],
 
-        /**
-         * Whether or not the chip is selected. Requires selectable to be true.
-         *
-         * @attribute selected
-         * @type boolean
-         * @default false
-         */
-         selected: {
-          type: Boolean,
-          notify: true,
-          value: false,
-          reflectToAttribute: true
-        },
+  properties: {
+    /**
+     * Whether or not the chip is removable. If `true`, a remove button will
+     * be shown.
+     *
+     * @attribute removable
+     * @type boolean
+     * @default false
+     */
+    removable: {
+      type: Boolean,
+      value: false,
+      reflectToAttribute: true
+    },
 
-        /**
-         * Whether or not the chip contains additional content. Single-line chips do not open.
-         */
-        singleLine: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true,
-          observer: '_singleLineChanged',
-        },
+    /**
+     * Whether or not the chip is selectable. If `true`, a select button will
+     * be shown and act like a checkbox.
+     *
+     * @attribute selectable
+     * @type boolean
+     * @default false
+     */
+     selectable: {
+      type: Boolean,
+      value: false,
+      reflectToAttribute: true
+    },
 
-        /**
-         * Always show remove button
-         */
-        persistRemoveButton: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true,
-          observer: '_singleLineChanged'
-        },
+    /**
+     * Whether or not the chip is selected. Requires selectable to be true.
+     *
+     * @attribute selected
+     * @type boolean
+     * @default false
+     */
+     selected: {
+      type: Boolean,
+      notify: true,
+      value: false,
+      reflectToAttribute: true
+    },
 
-        /**
-         * Whether or not the chip uses an animated transition between opened and
-         * closed states
-         *
-         * @attribute animated
-         * @type boolean
-         * @default true
-         */
-        animated: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true
-        },
+    /**
+     * Whether or not the chip contains additional content. Single-line chips do not open.
+     */
+    singleLine: {
+      type: Boolean,
+      value: false,
+      reflectToAttribute: true,
+      observer: '_singleLineChanged',
+    },
 
-        /**
-         * Whether or not the chip is in its opened state.
-         *
-         * @attribute opened
-         * @type boolean
-         * @default false
-         */
-        opened: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true,
-          notify: true,
-          observer: '_openedChanged'
-        },
+    /**
+     * Always show remove button
+     */
+    persistRemoveButton: {
+      type: Boolean,
+      value: false,
+      reflectToAttribute: true,
+      observer: '_singleLineChanged'
+    },
 
-        /**
-         * Whether or not the chip state is "active". If `true`, the main chip
-         * area will be highlighted when in the opened state.
-         *
-         * @attribute active
-         * @type boolean
-         * @default false
-         */
-        active: {
-          type: Boolean,
-          value: false,
-          notify: true,
-          reflectToAttribute: true
-        },
+    /**
+     * Whether or not the chip uses an animated transition between opened and
+     * closed states
+     *
+     * @attribute animated
+     * @type boolean
+     * @default true
+     */
+    animated: {
+      type: Boolean,
+      value: false,
+      reflectToAttribute: true
+    },
 
-        _elevation: {
-          type: Number,
-          computed: '_computeElevation(opened, focused, disabled, active, pressed)'
-        },
+    /**
+     * Whether or not the chip is in its opened state.
+     *
+     * @attribute opened
+     * @type boolean
+     * @default false
+     */
+    opened: {
+      type: Boolean,
+      value: false,
+      reflectToAttribute: true,
+      notify: true,
+      observer: '_openedChanged'
+    },
 
-        _keyTarget: {
-          type: Object,
-          value: function() {
-            return this;
-          }
-        },
-      },
-      listeners: {
-        tap: '_onTap',
-        blur: '_onBlur'
-      },
-      hostAttributes: {
-        tabindex: '0'
-      },
-      ready: function() {
-        if (this.$.removeBtn) {
-          // disable tabindex on remove button so that tabindex can be used for chips
-          this.$.removeBtn.removeAttribute('tabindex');
-        }
-        if (this.$.selectBtn) {
-          // disable tabindex on select button so that tabindex can be used for chips
-          this.$.selectBtn.removeAttribute('tabindex');
-        }
-      },
-      _computeElevation: function(opened, focused, pressed) {
-        if (focused || pressed) {
-          return 1;
-        }
-        if (opened) {
-          return 4;
-        }
-        return 0;
-      },
-      _onTap: function() {
-        this.toggleOpened();
-      },
-      _onBlur: function() {
-        this.opened = false;
-      },
-      /**
-       * Fired before the element is removed. This event is cancelable.
-       *
-       * @event remove
-       */
-      remove: function(event) {
-        event.stopPropagation();
-        var e = this.fire('remove', {}, {bubbles: false, cancelable: true});
-        if (!e.defaultPrevented) {
-          this.parentNode.removeChild(this);
-        }
-      },
-      /**
-       * Change selection.
-       *
-       * @event select
-       */
-       select: function(event) {
-        event.stopPropagation();
-        this.selected = !this.selected;
-      },
+    /**
+     * Whether or not the chip state is "active". If `true`, the main chip
+     * area will be highlighted when in the opened state.
+     *
+     * @attribute active
+     * @type boolean
+     * @default false
+     */
+    active: {
+      type: Boolean,
+      value: false,
+      notify: true,
+      reflectToAttribute: true
+    },
 
-      toggleOpened: function() {
-        if (!this.singleLine) {
-          this.opened = !this.opened;
-        } else {
-          this.selected = !this.selected;
-        };
-      },
-      _singleLineChanged: function(singleLine) {
-        if (singleLine && this.opened) {
-          this.opened = false;
-        }
-      },
-      _openedChanged: function(opened) {
-        if (opened && this.singleLine) {
-          // single-line chips don't open
-          this.opened  = false;
-          return;
-        }
-        if (this.animated) {
-          var $content, width, height;
-					$content = this.$.content;
-          width = height = '';
-          if (this.opened) {
-            // temporarily disable transitions in order to take measurements of
-            // the content area, allowing for a proper css transision.
-            this.animated = false;
-            this.opened = true;
-            width = $content.offsetWidth + 'px';
-            height = $content.offsetHeight + 'px';
-            this.opened = false;
-            this._forceReflow();
-            this.opened = true;
-            this.animated = true;
-          }
-          $content.style.width = width;
-          $content.style.height = height;
-        }
-      },
-      _forceReflow: function() {
-        return this.offsetHeight;
+    _elevation: {
+      type: Number,
+      computed: '_computeElevation(opened, focused, disabled, active, pressed)'
+    },
+
+    _keyTarget: {
+      type: Object,
+      value: function() {
+        return this;
       }
-    });
-  </script>
+    },
+  },
 
-</dom-module>
+  listeners: {
+    tap: '_onTap',
+    blur: '_onBlur'
+  },
 
+  hostAttributes: {
+    tabindex: '0'
+  },
+
+  ready: function() {
+    if (this.$.removeBtn) {
+      // disable tabindex on remove button so that tabindex can be used for chips
+      this.$.removeBtn.removeAttribute('tabindex');
+    }
+    if (this.$.selectBtn) {
+      // disable tabindex on select button so that tabindex can be used for chips
+      this.$.selectBtn.removeAttribute('tabindex');
+    }
+  },
+
+  _computeElevation: function(opened, focused, pressed) {
+    if (focused || pressed) {
+      return 1;
+    }
+    if (opened) {
+      return 4;
+    }
+    return 0;
+  },
+
+  _onTap: function() {
+    this.toggleOpened();
+  },
+
+  _onBlur: function() {
+    this.opened = false;
+  },
+
+  /**
+   * Fired before the element is removed. This event is cancelable.
+   *
+   * @event remove
+   */
+  remove: function(event) {
+    event.stopPropagation();
+    var e = this.fire('remove', {}, {bubbles: false, cancelable: true});
+    if (!e.defaultPrevented) {
+      this.parentNode.removeChild(this);
+    }
+  },
+
+  /**
+   * Change selection.
+   *
+   * @event select
+   */
+  select: function(event) {
+   event.stopPropagation();
+   this.selected = !this.selected;
+ },
+
+  toggleOpened: function() {
+    if (!this.singleLine) {
+      this.opened = !this.opened;
+    } else {
+      this.selected = !this.selected;
+    };
+  },
+
+  _singleLineChanged: function(singleLine) {
+    if (singleLine && this.opened) {
+      this.opened = false;
+    }
+  },
+
+  _openedChanged: function(opened) {
+    if (opened && this.singleLine) {
+      // single-line chips don't open
+      this.opened  = false;
+      return;
+    }
+    if (this.animated) {
+      var $content, width, height;
+                $content = this.$.content;
+      width = height = '';
+      if (this.opened) {
+        // temporarily disable transitions in order to take measurements of
+        // the content area, allowing for a proper css transision.
+        this.animated = false;
+        this.opened = true;
+        width = $content.offsetWidth + 'px';
+        height = $content.offsetHeight + 'px';
+        this.opened = false;
+        this._forceReflow();
+        this.opened = true;
+        this.animated = true;
+      }
+      $content.style.width = width;
+      $content.style.height = height;
+    }
+  },
+
+  _forceReflow: function() {
+    return this.offsetHeight;
+  }
+});
