@@ -44,7 +44,8 @@ Basic chip with single letter instead of an icon
 */
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import '@polymer/iron-behaviors/iron-button-state.js';
+import { IronButtonState} from '@polymer/iron-behaviors/iron-button-state.js';
+import { IronControlState } from '@polymer/iron-behaviors/iron-control-state.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icon/iron-icon.js';
@@ -327,8 +328,8 @@ Polymer({
   is: 'paper-chip',
 
   behaviors: [
-    Polymer.IronButtonState,
-    Polymer.IronControlState,
+    IronButtonState,
+    IronControlState,
   ],
 
   properties: {
